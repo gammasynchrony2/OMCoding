@@ -1,15 +1,15 @@
 const fs = require('fs');
-const wStream = fs.createWriteStream("file.txt")
-const rStream = fs.createReadStream("file.txt")
+const wStream = fs.createWriteStream("./file.txt")
+const rStream = fs.createReadStream("./file.txt")
 
-const fileTest = "file.txt";
+const fileTest = "./file.txt";
 const readIt = () => {
     rStream.on("readable", () => {
-        rStream.read().toString();
+        console.log(rStream.read().toString());
     });
     rStream.on("end", () => {
         console.log("finished reading file");
-    })
+    });
 };
 
 wStream.on('open', fd => {

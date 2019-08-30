@@ -2,6 +2,7 @@ const request = require('request');
 const inquirer = require("inquirer");
 const urlTwo = "http://lookup-service-prod.mlb.com/json/named.team_all_season.bam?sport_code='mlb'&all_star_sw='N'&sort_order=name_asc&season='2019'";
 let recordResultOne = 0;
+let recordResultTwo = 0;
 
 const returnObject = {
     leagueName: "NL",
@@ -16,7 +17,9 @@ const returnObject = {
         tradeNom: "",
         tradeNomOBP: "",
         tradeNomIndex: 0,
-        teamAverageOBP: 0
+        teamAverageOBP: 0,
+        OBPRosterRevised: [],
+        teamAverageOBPRevised: 0
     },
     teamTwo: {
         name: "",
@@ -27,7 +30,9 @@ const returnObject = {
         tradeNom: "",
         tradeNomOBP: "",
         tradeNomIndex: 0,
-        teamAverageOBP:0
+        teamAverageOBP:0,
+        OBPRosterRevised: [],
+        teamAverageOBPRevised: 0
     }
 };
 
@@ -201,7 +206,7 @@ function getTeams() {
                                             console.clear();
                                             console.log("First Team Selected: " + thisObject.teamOne.name);
                                             console.log("Second Team Selected: " + thisObject.teamTwo.name + "\n");
-                                            console.log("Trade Pick for the " + thisObject.teamOne.name + ": " + thisObject.teamOne.tradeNom + "\n");
+                                            console.log("Trade Pick for the " + thisObject.teamOne.name + ": " + thisObject.teamOne.tradeNom);
                                             // Get tradeNom's OBP
                                             thisObject.teamOne.tradeNomIndex = thisObject.teamOne.nameRoster.indexOf(thisObject.teamOne.tradeNom);
                                             thisObject.teamOne.tradeNomOBP = thisObject.teamOne.OBPRoster[thisObject.teamOne.tradeNomIndex];
@@ -220,17 +225,17 @@ function getTeams() {
                                             // Print out the Player OBP vs. Team OBP
                                             if(thisObject.teamOne.tradeNomOBP == '.---') {
                                                 recordResultOne = 1;
-                                                console.log(thisObject.teamOne.tradeNom + "'s OBP is not reported by MLB.com.")
-                                                console.log("He therefore does not contribute to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                console.log("       " + thisObject.teamOne.tradeNom + "'s OBP is not reported by MLB.com.")
+                                                console.log("       He therefore does not contribute to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                             } else if(Number.parseFloat(thisObject.teamOne.tradeNomOBP) == thisObject.teamOne.teamAverageOBP) {
                                                 recordResultOne = 2;
-                                                console.log(thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is identical to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is identical to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                             } else if(Number.parseFloat(thisObject.teamOne.tradeNomOBP) < thisObject.teamOne.teamAverageOBP) {
                                                 recordResultOne = 3;
-                                                console.log(thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is lower than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is lower than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                             } else if(Number.parseFloat(thisObject.teamOne.tradeNomOBP) > thisObject.teamOne.teamAverageOBP) {
                                                 recordResultOne = 4;
-                                                console.log(thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is greater than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is greater than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                             }
 
                                             // NOW START ON TEAM 2!!!!!
@@ -326,18 +331,18 @@ function getTeams() {
                                                             console.clear();
                                                             console.log("First Team Selected: " + thisObject.teamOne.name);
                                                             console.log("Second Team Selected: " + thisObject.teamTwo.name + "\n");
-                                                            console.log("Trade Pick for the " + thisObject.teamOne.name + ": " + thisObject.teamOne.tradeNom + "\n");
+                                                            console.log("Trade Pick for the " + thisObject.teamOne.name + ": " + thisObject.teamOne.tradeNom);
                                                             if(recordResultOne == 1) {
-                                                                console.log(thisObject.teamOne.tradeNom + "'s OBP is not reported by MLB.com.")
-                                                                console.log("He therefore does not contribute to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP is not reported by MLB.com.")
+                                                                console.log("       He therefore does not contribute to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                                             } else if(recordResultOne == 2) {
-                                                                console.log(thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is identical to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is identical to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                                             } else if(recordResultOne == 3) {
-                                                                console.log(thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is lower than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is lower than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                                             } else if(recordResultOne == 4) {
-                                                                console.log(thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is greater than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is greater than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
                                                             }
-                                                            console.log("Trade Pick for the " + thisObject.teamTwo.name + ": " + thisObject.teamTwo.tradeNom + "\n");
+                                                            console.log("Trade Pick for the " + thisObject.teamTwo.name + ": " + thisObject.teamTwo.tradeNom);
                                                             // Get tradeNom's OBP
                                                             thisObject.teamTwo.tradeNomIndex = thisObject.teamTwo.nameRoster.indexOf(thisObject.teamTwo.tradeNom);
                                                             thisObject.teamTwo.tradeNomOBP = thisObject.teamTwo.OBPRoster[thisObject.teamTwo.tradeNomIndex];
@@ -355,15 +360,99 @@ function getTeams() {
                                                             thisObject.teamTwo.teamAverageOBP = (teamTwoOBPCollector / j);
                                                             // Print out the Player OBP vs. Team OBP
                                                             if(thisObject.teamTwo.tradeNomOBP == '.---') {
-                                                                console.log(thisObject.teamTwo.tradeNom + "'s OBP is not reported by MLB.com.")
-                                                                console.log("He therefore does not contribute to the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
+                                                                recordResultTwo = 1;
+                                                                console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP is not reported by MLB.com.")
+                                                                console.log("       He therefore does not contribute to the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
                                                             } else if(Number.parseFloat(thisObject.teamTwo.tradeNomOBP) == thisObject.teamTwo.teamAverageOBP) {
-                                                                console.log(thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is identical to the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
+                                                                recordResultTwo = 2;
+                                                                console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is identical to the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
                                                             } else if(Number.parseFloat(thisObject.teamTwo.tradeNomOBP) < thisObject.teamTwo.teamAverageOBP) {
-                                                                console.log(thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is lower than the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
+                                                                recordResultTwo = 3;
+                                                                console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is lower than the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
                                                             } else if(Number.parseFloat(thisObject.teamTwo.tradeNomOBP) > thisObject.teamTwo.teamAverageOBP) {
-                                                                console.log(thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is greater than the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
+                                                                recordResultTwo = 4;
+                                                                console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is greater than the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP);
                                                             }
+
+                                                            // Output Trade Result:
+                                                            setTimeout(() => {
+                                                                console.clear();
+                                                                console.log("First Team Selected: " + thisObject.teamOne.name);
+                                                                console.log("Second Team Selected: " + thisObject.teamTwo.name + "\n");
+                                                                console.log("Trade Pick for the " + thisObject.teamOne.name + ": " + thisObject.teamOne.tradeNom);
+                                                                if(recordResultOne == 1) {
+                                                                    console.log("       " +thisObject.teamOne.tradeNom + "'s OBP is not reported by MLB.com.")
+                                                                    console.log("       He therefore does not contribute to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                } else if(recordResultOne == 2) {
+                                                                    console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is identical to the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                } else if(recordResultOne == 3) {
+                                                                    console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is lower than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                } else if(recordResultOne == 4) {
+                                                                    console.log("       " +thisObject.teamOne.tradeNom + "'s OBP of " + thisObject.teamOne.tradeNomOBP + " is greater than the " + thisObject.teamOne.name + "'s team-wide average OBP of " + thisObject.teamOne.teamAverageOBP + "\n");
+                                                                }
+                                                                console.log("Trade Pick for the " + thisObject.teamTwo.name + ": " + thisObject.teamTwo.tradeNom);
+                                                                if(recordResultTwo == 1) {
+                                                                    console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP is not reported by MLB.com.")
+                                                                    console.log("       He therefore does not contribute to the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP + "\n");
+                                                                } else if(recordResultTwo == 2) {
+                                                                    console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is identical to the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP + "\n");
+                                                                } else if(recordResultTwo == 3) {
+                                                                    console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is lower than the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP + "\n");
+                                                                } else if(recordResultTwo == 4) {
+                                                                    console.log("       " +thisObject.teamTwo.tradeNom + "'s OBP of " + thisObject.teamTwo.tradeNomOBP + " is greater than the " + thisObject.teamTwo.name + "'s team-wide average OBP of " + thisObject.teamTwo.teamAverageOBP + "\n");
+                                                                }
+                                                                console.log("\nHERE ARE THE RESULTS OF YOUR TRADE: \n" );
+
+                                                                console.log(thisObject.teamOne.tradeNom + `: `);
+                                                                console.log(`       Old Team: ${thisObject.teamOne.name}`);
+                                                                console.log(`       New Team: ${thisObject.teamTwo.name} \n`);
+                                                                console.log(thisObject.teamTwo.tradeNom + ': ');
+                                                                console.log(`       Old Team: ${thisObject.teamTwo.name}`);
+                                                                console.log(`       New Team: ${thisObject.teamOne.name} \n`);
+
+                                                                // calculate a new Average OBP for team 1
+                                                                thisObject.teamOne.OBPRosterRevised = thisObject.teamOne.OBPRoster;
+                                                                thisObject.teamOne.OBPRosterRevised[thisObject.teamOne.tradeNomIndex] = thisObject.teamTwo.tradeNomOBP;
+
+                                                                let j = 0;
+                                                                let teamOneOBPCollector = 0;
+                                                                for(let i = 0; i < thisObject.teamOne.OBPRosterRevised.length; i++ ) {
+                                                                    if(thisObject.teamOne.OBPRosterRevised[i] == '.---') {
+                                                                        // console.log("doesn't count");
+                                                                    } else {
+                                                                        teamOneOBPCollector += (Number.parseFloat(thisObject.teamOne.OBPRosterRevised[i]));
+                                                                        j++;
+                                                                    }
+                                                                }
+                                                                thisObject.teamOne.teamAverageOBPRevised = (teamOneOBPCollector / j);
+                                                                // print OBP Change for Team 1
+
+                                                                console.log(thisObject.teamOne.name + ": ");
+                                                                console.log(`       Old Average OBP: ${thisObject.teamOne.teamAverageOBP}`);
+                                                                console.log(`       New Average OBP: ${thisObject.teamOne.teamAverageOBPRevised} \n`);
+
+                                                                // calculate a new Average OBP for team 2
+                                                                thisObject.teamTwo.OBPRosterRevised = thisObject.teamTwo.OBPRoster;
+                                                                thisObject.teamTwo.OBPRosterRevised[thisObject.teamTwo.tradeNomIndex] = thisObject.teamOne.tradeNomOBP;
+                                                                
+                                                                j = 0;
+                                                                let teamTwoOBPCollector = 0;
+                                                                for(let i = 0; i < thisObject.teamTwo.OBPRosterRevised.length; i++ ) {
+                                                                    if(thisObject.teamTwo.OBPRosterRevised[i] == '.---') {
+                                                                        // console.log("doesn't count");
+                                                                    } else {
+                                                                        teamTwoOBPCollector += (Number.parseFloat(thisObject.teamTwo.OBPRosterRevised[i]));
+                                                                        j++;
+                                                                    }
+                                                                }
+                                                                thisObject.teamTwo.teamAverageOBPRevised = (teamTwoOBPCollector / j);
+
+                                                                // Print Average OBP Change for Team 2
+                                                                console.log(thisObject.teamTwo.name + ": ");
+                                                                console.log(`       Old Average OBP: ${thisObject.teamTwo.teamAverageOBP}`);
+                                                                console.log(`       New Average OBP: ${thisObject.teamTwo.teamAverageOBPRevised}`);
+
+                                                            },1000);
 
 
 

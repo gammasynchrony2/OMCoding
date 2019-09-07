@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- specify the route to a file in the partials folder -->
+    <% include partials/head.ejs %>
+
+  </head>
+  <body>
+
+    <!-- use a for loop to increment through the array of movies and output each movie's poster -->
+
+    <% for ( var i = 0; i < movies.length; i ++ ) { %>
+
+      <img src="/images/<%= movies[i].poster %>" class = "img-responsive">
+
+    <% } %>
+    <!-- specify the route to a file in the partials folder -->
+    <% include partials/scripts.ejs %>
+
+  </body>
+</html>
+

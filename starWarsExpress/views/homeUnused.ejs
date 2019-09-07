@@ -1,0 +1,15 @@
+<h1>This is the template for the home page</h1>
+
+<!-- title comes from res.render for the home page in index.js -->
+<!-- syntax come from Ruby on Rails-->
+<!-- "=" indicates we want to view it on the page (instead of just executing it -->
+<p><%= title %></p>
+
+
+<!-- loops through an array declared in res.render in index.js -->
+<ul>
+    <% for (var i = 0; i < movies.length; i++) { %>
+        <li><%= movies[i] %></li>
+
+    <% } %>
+</ul>

@@ -1,4 +1,4 @@
-// QUIT VIDEO AT 44:00
+// QUIT VIDEO AT 54:33
 
 var express = require('express');
 

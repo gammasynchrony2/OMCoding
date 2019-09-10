@@ -1,0 +1,22 @@
+{
+  "name": "Jiminy Jillickers",
+  "favoriteNumber": 3,
+  "isProgrammer": true,
+  "hobbies": [
+    "Car Repair",
+    "Ham Radio",
+    "Bowling"
+  ],
+  "friends": [
+    {
+      "name": "Joey",
+      "favoriteNumber": 100,
+      "isProgrammer": false,
+      "friends": [
+        "Jimmy",
+        "Johnny",
+        "Balky"
+      ]
+    }
+  ]
+}
